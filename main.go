@@ -23,5 +23,7 @@ func routers(r *httprouter.Router) {
 
 	r.GET("/", controller.StartPageController)
 	r.GET("/users", controller.GetUsersController)
+	r.GET("/add", controller.RenderAddUserForm)
+	r.POST("/addUser", controller.AddUserController)
 }
 
