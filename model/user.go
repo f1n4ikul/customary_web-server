@@ -1,18 +1,18 @@
 package model
 
-type User struct {
-	Id   int
-	Name string
-	Surname string
-	Age  int
+import "fmt"
 
+type User struct {
+	Id     int
+	Name   string
+	Surname string
+	Age    int
 }
 
 var Users []User
-
 var NextId int
 
-func GetAllUsers () (users []User, err error) {
+func GetAllUsers() (users []User, err error) {
 	if len(Users) == 0 {
 		Users = []User{
 			{1, "Андрей", "Князев", 25},
@@ -26,13 +26,16 @@ func GetAllUsers () (users []User, err error) {
 			{9, "Александр", "Николаев", 27},
 			{10, "Евгений", "Кириллов", 25},
 		}
+		NextId = len(Users) + 1
 	}
 	return Users, nil
 }
 
-func AddUser (user *User) {
+func AddUser(user *User) {
+	
 	user.Id = NextId
 	NextId++
 
 	Users = append(Users, *user)
+	fmt.Println("Added user:", user)
 }

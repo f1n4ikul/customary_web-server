@@ -2,14 +2,10 @@ package controller
 
 import (
 	"app/model"
-	"strconv"
-	
-
-
 	"html/template"
 	"net/http"
 	"path/filepath"
-	"fmt"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -24,7 +20,6 @@ func GetUsersController(rw http.ResponseWriter, r *http.Request, p httprouter.Pa
 	main := filepath.Join("public", "html", "usersDynamicPage.html")
 	common := filepath.Join("public", "html", "common.html")
 
-
 	tmpl, err := template.ParseFiles(main, common)
 	if err != nil {
 		http.Error(rw, err.Error(), 400)
@@ -38,40 +33,32 @@ func GetUsersController(rw http.ResponseWriter, r *http.Request, p httprouter.Pa
 	}
 }
 
-
-
 func AddUserController(rw http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(rw, err.Error(), 400)
 		return
 	}
 
-	
 	name := r.FormValue("name")
 	surname := r.FormValue("surname")
 	ageStr := r.FormValue("age")
 
 	age, err := strconv.Atoi(ageStr)
 	if err != nil {
-		http.Error(rw, "Invalid age value", 400) // Обработка ошибки при конвертации
+		http.Error(rw, "Invalid age value", 400)
 		return
 	}
 
-	
 	user := model.User{
 		Name:    name,
 		Surname: surname,
 		Age:     age,
 	}
 
-	// Добавляем пользователя в модель
+	
 	model.AddUser(&user)
 
-	// Ответ
-	rw.WriteHeader(http.StatusOK)
-	fmt.Fprintf(rw, "User added successfully: %v", user)
+	
+	http.Redirect(rw, r, "/users", http.StatusSeeOther)
 }
-
-
